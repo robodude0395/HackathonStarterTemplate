@@ -14,3 +14,7 @@ def load_from_file() -> list[dict]:
     with open(PLAYER_FILENAME, "r", encoding="utf-8") as file:
         player_data = load(file)
     return player_data
+
+
+if __name__ == '__main__':
+    print(load_from_file())

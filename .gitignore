@@ -20,4 +20,7 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# Hackathon Manual Additions
 .venv
+*.json
