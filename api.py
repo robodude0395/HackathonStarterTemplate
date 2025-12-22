@@ -5,7 +5,6 @@ from flask import Flask, request
 
 from storage import save_to_file, load_from_file
 
-CURRENT_DATETIME = datetime.now()
 player_data = load_from_file()
 
 app = Flask(__name__)
@@ -27,7 +26,7 @@ def get_all_players():
     return player_data, 200
 
 
-@app.route("/player/<int:id>", methods=["GET"])
+@app.route("/players/<int:id>", methods=["GET"])
 def get_player_by_id(id):
     """Return player found with matching id"""
     for player in player_data:
@@ -37,22 +36,50 @@ def get_player_by_id(id):
     return {"error": f"player with id {id} not found."}, 404
 
 
-@app.route("/initialise_player", methods=["POST"])
+@app.route("/players/init", methods=["POST"])
 def post_score():
-    """Post current player score"""
+    """Initialise new player with starting data"""
     player = request.json
     if not player:
-        return {"error": True, "message": "No story provided to post."}, 404
-    player['id'] = len(player_data) + 1  # may have gaps, but no duplicates
+        return {"error": True, "message": "No player data provided to post."}, 404
+    last_used_id = player_data[-1].get('id')
+    if last_used_id:
+        player['id'] = last_used_id + 1  # reserved id = no update conflicts
+    else:
+        player['id'] = 0  # default, should only occur once if ever
+
     player['colour'] = player.get('colour')  # tuple of 3 int (0, 0, 0) = white
     player['name'] = player.get('name')
-    player['score'] = 0  # not including base size
-    player['created_at'] = CURRENT_DATETIME
-    player['updated_at'] = CURRENT_DATETIME  # to track when size changes
+    player['score'] = 0  # not including start/initial size
+    player['created_at'] = datetime.now()
+    player['updated_at'] = datetime.now()  # to track when size changes
 
     player_data.append(player)
     save_to_file(player_data)
     return player_data, 201
+
+
+@app.route("/players/<int:id>/update", methods=["PATCH", "DELETE"])
+def update_player_by_id(id: int):
+    """Update or delete players and their score"""
+    session_player = get_player_by_id(id)
+    player, status_code = session_player[0], session_player[1]
+    if status_code != 200:
+        return {"error": True, "message": f"No player with id {id} was found"}, 404
+
+    player_data.remove(player)
+
+    if (request.method == "PATCH"):
+        update = request.json
+        if not update:
+            return {"error": True, "message": "No player update was provided"}, 404
+        # score = diff in start and current size
+        player['score'] = update.score
+        player['updated_at'] = str(datetime.now())
+        player_data.append(player)
+        save_to_file(player_data)
+
+    return player_data, 200
 
 
 if __name__ == "__main__":
