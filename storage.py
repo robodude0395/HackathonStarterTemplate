@@ -6,7 +6,7 @@ PLAYER_FILENAME = "players.json"
 def save_to_file(player_scores: list[dict]) -> None:
     """Save the current player data to a file"""
     with open(PLAYER_FILENAME, "w") as file:
-        dump(player_scores, file)
+        dump(player_scores, file, indent=2)
 
 
 def load_from_file() -> list[dict]:

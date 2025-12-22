@@ -17,8 +17,16 @@ app = Flask(__name__)
 def player():
     """API home page with instruction"""
     api_help = """
-    /players : get all players
-    /player/<int:id> : get player by id
+        
+        /players : get all players
+    
+        /players/<int:id> : get player by id
+    
+        /players/leaderboard : get leaderboard of top players
+
+        /players/add : add new player to player data
+
+        /players/<int:id>/update : patch or delete player by id
     """
     return api_help
 
@@ -54,7 +62,7 @@ def get_player_leaderboard():
     return leaderboard[:BOARD_SIZE], 200
 
 
-@app.route("/players/init", methods=["POST"])
+@app.route("/players/add", methods=["POST"])
 def post_score():
     """Initialise new player with starting data"""
     player = request.json
@@ -69,8 +77,8 @@ def post_score():
     player['name'] = player.get('name')
     player['colour'] = player.get('colour')  # tuple of 3 int (0, 0, 0) = white
     player['score'] = 0  # not including start/initial size
-    player['created_at'] = datetime.now()
-    player['updated_at'] = datetime.now()  # to track when size changes
+    player['created_at'] = str(datetime.now())
+    player['updated_at'] = str(datetime.now())  # to track when size changes
 
     player_data.append(player)
     save_to_file(player_data)
@@ -92,7 +100,10 @@ def update_player_by_id(id: int):
         if not update:
             return {"error": True, "message": "No player update was provided"}, 404
         # score = diff in start and current size
-        player['score'] = update.score
+        updated_score = update.get('score')
+        if not updated_score:
+            return {"error": True, "message": "Error getting updated score"}, 404
+        player['score'] = updated_score
         player['updated_at'] = str(datetime.now())
         player_data.append(player)
         save_to_file(player_data)
