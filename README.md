@@ -1,5 +1,7 @@
 # Hackathon Starter Template
 
+This is my evil plan to destroy the world!
+
 A simple HTML/CSS/JavaScript starter template with Bootstrap for building websites quickly.
 
 ## Project Structure
