@@ -2,24 +2,26 @@ function AgarBlob(x, y, radius, colour){
     this.pos = createVector(x, y);
     this.r = radius;
     this.area = PI*pow(this.r, 2);
-    print(this.area);
     this.c = colour;
 
     //player blob parameters
     this.max_speed = 5
-    this.min_speed = 0.7
+    this.min_speed = 0.3
     this.min_radius = radius
     this.current_speed = this.max_speed
     this.growth_slow_down_rate = 0.5
 
+    //Velocity stuff
+    this.vel = createVector(0, 0);
+
     this.update = function(){
     //Get mouse coords
-    var vel = createVector(mouseX-(width/2), mouseY-(height/2));
+    var newVel = createVector(mouseX-(width/2), mouseY-(height/2));
 
     //Set mouse vector magnitude to 3
-    vel.setMag(this.current_speed);
-
-    this.pos.add(vel);
+    newVel.setMag(this.current_speed);
+    this.vel.lerp(newVel, 0.2);
+    this.pos.add(this.vel);
     }
 
     this.show = function() {
