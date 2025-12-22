@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- The title appears in the browser tab -->
-    <title>Hackathon Starter</title>
+    <title>Team 6 Project</title>
 
     <!-- Bootstrap CSS: A popular framework for styling websites quickly -->
     <link
@@ -49,12 +49,8 @@
     <!-- Hero Section: A large, prominent section at the top of the page -->
     <section class="hero bg-primary text-white text-center py-5">
       <div class="container">
-        <h1 class="display-4 fw-bold">Welcome to Your Site</h1>
-        <p class="lead">Build something amazing</p>
-        <!-- id="cta-button" allows us to find this button in script.js -->
-        <button class="btn btn-light btn-lg" id="cta-button">
-          Get Started
-        </button>
+        <h1 class="display-4 fw-bold">Welcome to Christmas Agar.io Game</h1>
+        <p class="lead">Eat other blobs to grow!</p>
       </div>
     </section>
 
@@ -67,29 +63,68 @@
           <div class="col-md-4">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Feature One</h5>
-                <p class="card-text">
-                  Description of your first feature goes here.
-                </p>
+                <h5 class="card-title">Choose Your Blob Colour</h5>
+                
+                <div class="d-grid gap-2"
+                  style="grid-template-columns: repeat(3, 60px);">
+
+                  <input type="radio" class="btn-check" name="color" id="c1" value="red">
+                  <label class="btn color-btn btn-danger" for="c1"></label>
+
+                  <input type="radio" class="btn-check" name="color" id="c2" value="blue">
+                  <label class="btn color-btn btn-primary" for="c2"></label>
+
+                  <input type="radio" class="btn-check" name="color" id="c3" value="green">
+                  <label class="btn color-btn btn-success" for="c3"></label>
+
+                  <input type="radio" class="btn-check" name="color" id="c4" value="yellow">
+                  <label class="btn color-btn btn-warning" for="c4"></label>
+
+                  <input type="radio" class="btn-check" name="color" id="c5" value="cyan">
+                  <label class="btn color-btn btn-info" for="c5"></label>
+
+                  <input type="radio" class="btn-check" name="color" id="c6" value="purple">
+                  <label class="btn color-btn" style="background:#6f42c1;" for="c6"></label>
+
+                  <input type="radio" class="btn-check" name="color" id="c7" value="orange">
+                  <label class="btn color-btn" style="background:#fd7e14;" for="c7"></label>
+
+                  <input type="radio" class="btn-check" name="color" id="c8" value="pink">
+                  <label class="btn color-btn" style="background:#d63384;" for="c8"></label>
+
+                  <input type="radio" class="btn-check" name="color" id="c9" value="teal">
+                  <label class="btn color-btn" style="background:#20c997;" for="c9"></label>
+
+                </div>
               </div>
             </div>
           </div>
+
           <div class="col-md-4">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Feature Two</h5>
-                <p class="card-text">
-                  Description of your second feature goes here.
-                </p>
+                <h5 class="card-title">Choose Your name</h5>
+                <div class="mb-3 row">
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="playerName">
+
+                    <!-- id allows us to find this button in script.js -->
+                    <button class="btn btn-light btn-lg mt-3" id="startGameBtn">
+                      Enter Game
+                    </button>
+
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+
           <div class="col-md-4">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Feature Three</h5>
+                <h5 class="card-title">Leaderboard</h5>
                 <p class="card-text">
-                  Description of your third feature goes here.
+                  We can add a Leaderboard here.
                 </p>
               </div>
             </div>
@@ -112,3 +147,18 @@
     <script src="script.js"></script>
   </body>
 </html>
+
+
+
+
+
+
+
+
+ 
+
+
+  
+
+  
+

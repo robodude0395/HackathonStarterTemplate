@@ -16,3 +16,28 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+//code to return vals form buttons
+
+const startGameBtn = document.getElementById("startGameBtn");
+const playerNameInput = document.getElementById("playerName");
+
+// Listen for button click
+startGameBtn.addEventListener("click", () => {
+  const playerName = playerNameInput.value;
+
+  console.log("Player name:", playerName);
+  const now = new Date();
+  const timeString = now.toLocaleTimeString(); // e.g., "14:35:07"
+  console.log(`Start Game clicked at ${timeString}`);
+});
+
+
+const colorButtons = document.querySelectorAll('input[name="color"]');
+
+// Add a change listener to each one
+colorButtons.forEach(button => {
+  button.addEventListener("change", () => {
+    console.log("Selected colour:", button.value);
+  });
+});
