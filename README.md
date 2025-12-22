@@ -1,4 +1,4 @@
-# Hackathon Starter Template
+# Hackathon Super Awesome template title changed by Dev WOW
 
 A simple HTML/CSS/JavaScript starter template with Bootstrap for building websites quickly.
 
