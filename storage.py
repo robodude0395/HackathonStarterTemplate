@@ -1,4 +1,4 @@
-"""Module to load and save to leaderboard.json"""
+"""Module to load and save to players.json"""
 from json import load, dump
 PLAYER_FILENAME = "players.json"
 

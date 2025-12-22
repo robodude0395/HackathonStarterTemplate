@@ -5,6 +5,9 @@ from flask import Flask, request
 
 from storage import save_to_file, load_from_file
 
+BOARD_SIZE = 10  # number of players visible on the board
+EMPTY = "-"  # used when not enough players for full leaderboard
+
 player_data = load_from_file()
 
 app = Flask(__name__)
@@ -36,20 +39,35 @@ def get_player_by_id(id):
     return {"error": f"player with id {id} not found."}, 404
 
 
+@app.route("/players/leaderboard", methods=["GET"])
+def get_player_leaderboard():
+    """Return top players based on score"""
+    leaderboard = sorted(
+        player_data, key=lambda player: player['score'], reverse=True)[:BOARD_SIZE]
+
+    # if not enough current players for board size
+    high_score_count = len(leaderboard)
+    if high_score_count < BOARD_SIZE:
+        for _ in range(BOARD_SIZE - high_score_count):
+            leaderboard.append({"name": EMPTY, "colour": EMPTY, "score": 0})
+
+    return leaderboard[:BOARD_SIZE], 200
+
+
 @app.route("/players/init", methods=["POST"])
 def post_score():
     """Initialise new player with starting data"""
     player = request.json
     if not player:
         return {"error": True, "message": "No player data provided to post."}, 404
+
     last_used_id = player_data[-1].get('id')
     if last_used_id:
         player['id'] = last_used_id + 1  # reserved id = no update conflicts
     else:
         player['id'] = 0  # default, should only occur once if ever
-
-    player['colour'] = player.get('colour')  # tuple of 3 int (0, 0, 0) = white
     player['name'] = player.get('name')
+    player['colour'] = player.get('colour')  # tuple of 3 int (0, 0, 0) = white
     player['score'] = 0  # not including start/initial size
     player['created_at'] = datetime.now()
     player['updated_at'] = datetime.now()  # to track when size changes
