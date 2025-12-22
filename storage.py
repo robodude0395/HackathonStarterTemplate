@@ -1,12 +1,18 @@
 """Module to load and save to leaderboard.json"""
 from json import load, dump
+import os
 PLAYER_FILENAME = "players.json"
 
 
 def save_to_file(player_score: list[dict]) -> None:
     """Save the current player data to a file"""
-    with open(PLAYER_FILENAME, "w") as file:
-        dump(player_score, file)
+    if not os.path.exists(PLAYER_FILENAME):
+        with open(PLAYER_FILENAME, "w") as file:
+            dump(player_score, file)
+
+    with open(PLAYER_FILENAME, "a") as file:
+        for player in player_score:
+            dump(player, file)
 
 
 def load_from_file() -> list[dict]:

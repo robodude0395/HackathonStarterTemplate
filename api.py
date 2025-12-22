@@ -1,10 +1,11 @@
 """Module to manage leaderboard"""
 
-from json import load
+from datetime import datetime
 from flask import Flask, request
 
 from storage import save_to_file, load_from_file
 
+CURRENT_DATETIME = datetime.now()
 player_data = load_from_file()
 
 app = Flask(__name__)
@@ -36,25 +37,22 @@ def get_player_by_id(id):
     return {"error": f"player with id {id} not found."}, 404
 
 
-@app.route("/player_score", methods=["POST"])
+@app.route("/initialise_player", methods=["POST"])
 def post_score():
     """Post current player score"""
-    if (request.method == "POST"):
-        story = request.json
-        if not story:
-            return {"error": True, "message": "No story provided to post."}, 404
-        story['score'] = 0
-        story['id'] = len(stories) + 1
-        story['updated_at'] = LOCAL_DATETIME
-        story['created_at'] = LOCAL_DATETIME
-        try:
-            story['website'] = urlparse(story.get('url')).netloc
-        except:
-            story['website'] = ''
+    player = request.json
+    if not player:
+        return {"error": True, "message": "No story provided to post."}, 404
+    player['id'] = len(player_data) + 1  # may have gaps, but no duplicates
+    player['colour'] = player.get('colour')  # tuple of 3 int (0, 0, 0) = white
+    player['name'] = player.get('name')
+    player['score'] = 0  # not including base size
+    player['created_at'] = CURRENT_DATETIME
+    player['updated_at'] = CURRENT_DATETIME  # to track when size changes
 
-        stories.append(story)
-        save_to_file(stories)
-        return stories, 201
+    player_data.append(player)
+    save_to_file(player_data)
+    return player_data, 201
 
 
 if __name__ == "__main__":
