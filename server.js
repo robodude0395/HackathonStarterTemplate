@@ -10,7 +10,7 @@ function BlobData(id, x, y, r){
 //Express is essentially Flask for JS
 var express = require('express'); //Import express module
 var app = express();
-var server = app.listen(3000);
+var server = app.listen(8000);
 
 app.use(express.static('./public/agario')); //Return public files users are meant to see
 
