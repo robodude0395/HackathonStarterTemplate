@@ -236,6 +236,6 @@ async function fetchLeaderboard() {
   }
 }
 
-// Update leaderboard every 5 seconds
-setInterval(fetchLeaderboard, 5000);
+// Update leaderboard every 3 seconds
+setInterval(fetchLeaderboard, 3000);
 fetchLeaderboard(); // Initial load
