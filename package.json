@@ -1,0 +1,25 @@
+{
+  "name": "nodejs_whiteboard",
+  "version": "1.0.0",
+  "description": "npm whiteboard",
+  "homepage": "https://github.com/robodude0395/nodejs_whiteboard#readme",
+  "bugs": {
+    "url": "https://github.com/robodude0395/nodejs_whiteboard/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robodude0395/nodejs_whiteboard.git"
+  },
+  "license": "ISC",
+  "author": "Omar",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "socket.io": "^4.8.2"
+  }
+}
