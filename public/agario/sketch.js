@@ -167,6 +167,7 @@ function draw() {
 
           // Listen for leaderboard updates from server
           socket.on('leaderboard_update', function(leaderboard) {
+            console.log(leaderboard);
             const listItems = document.querySelectorAll('#leaderboard-list li');
 
             leaderboard.forEach((player, index) => {
