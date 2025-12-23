@@ -14,7 +14,7 @@ function setup() {
   createCanvas(800, 800);
   player_blob = new AgarBlob(random(width), random(height) , starting_radius, color(255, 0, 0));
 
-  socket = io.connect('http://localhost:3000');
+  socket = io.connect('http://35.177.38.169:8000/');
 
   var data = {
     x: player_blob.pos.x,
