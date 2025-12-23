@@ -27,6 +27,46 @@ function heartbeat(){
     io.sockets.emit('heartbeat', players);
 }
 
+
+async function postPlayer(playerId, playerName, color) {
+
+  let url = `${getUrl()}players/add`
+
+  console.log(`Players POST url: ${url}`)
+  
+  const rawRes = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        "id":playerId,
+        "name":playerName,
+        "colour":color
+    }),
+    credentials: 'include'
+  })
+
+  const data = await rawRes.json()
+
+  console.log(data)
+}
+
+async function deletePlayer(playerId) {
+
+  let url = `${getUrl()}players/${playerId}/update`
+
+  console.log(`Players DELETE url: ${url}`)
+  
+  const rawRes = await fetch(url, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include'
+  })
+
+  const data = await rawRes.json()
+
+  console.log(data)
+}
+
 io.sockets.on('connection', newConnection);
 
 function newConnection(socket){
@@ -34,6 +74,10 @@ function newConnection(socket){
         var player = new BlobData(socket.id, data.x, data.y, data.r, data.name, data.color, data.timestamp);
         console.log('New player:', player);
         players[socket.id] = player;
+
+        // add new player
+        postPlayer(player.id, player.name, player.color)
+
     });
 
     socket.on('update', function(data){
@@ -49,6 +93,7 @@ function newConnection(socket){
     socket.on('disconnect', function(){  // Added: Clean up when player disconnects
         delete players[socket.id];
         console.log('Player disconnected: ' + socket.id);
+        deletePlayer(socket.id)
     });
 
     console.log('New connection from: ' + socket.id);

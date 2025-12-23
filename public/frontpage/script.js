@@ -21,28 +21,6 @@ function getLeaderboard() {
 
 }
 
-// add new player
-
-async function postPlayer(playerName, color) {
-
-  let url = `${getUrl()}players/add`
-
-  console.log(`Players POST url: ${url}`)
-  
-  const rawRes = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      "name":playerName,
-      "colour":color
-    }),
-    credentials: 'include'
-  })
-
-  const data = await rawRes.json()
-
-  console.log(data)
-}
 
 //code to return vals form buttons
 
@@ -69,7 +47,6 @@ document.addEventListener("DOMContentLoaded", function () {
   getLeaderboard()
 });
 
-
 // Listen for button click
 startGameBtn.addEventListener("click", () => {
   const playerName = playerNameInput.value || "Anonymous";
@@ -86,17 +63,7 @@ startGameBtn.addEventListener("click", () => {
   const timeString = now.toLocaleTimeString(); // e.g., "14:35:07"
   console.log(`Start Game clicked at ${timeString}`);
   
-  // Find colour
-  const colorButtons = document.querySelectorAll('input[name="color"]');
-
-  // Add a change listener to each one
-  colorButtons.forEach(button => {
-    if (button.checked) {
-      const color = button.value
-      console.log("Selected colour:", color);
-      postPlayer(playerName, color)
-    } 
-  });
+  postPlayer(playerName, color)
 });
 
 
