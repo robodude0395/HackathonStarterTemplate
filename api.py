@@ -2,6 +2,7 @@
 
 from datetime import datetime
 from flask import Flask, request
+from flask_cors import CORS
 
 from storage import save_to_file, load_from_file
 
@@ -11,6 +12,14 @@ EMPTY = "-"  # used when not enough players for full leaderboard
 player_data = load_from_file()
 
 app = Flask(__name__)
+CORS(
+    app,
+    supports_credentials=True,
+    origins=[
+        "http://localhost:8000",
+        "http://[::]:8000"
+    ]
+)
 
 
 @app.route("/", methods=["GET"])

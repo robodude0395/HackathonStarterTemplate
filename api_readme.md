@@ -1,6 +1,7 @@
 # Guide for using api.py
 
 This guide discusses two files: `api.py` and helper module `storage.py`.
+requirements.txt includes the flask module needed to run this.
 
 ## Structure
 

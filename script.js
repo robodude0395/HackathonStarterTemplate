@@ -1,5 +1,29 @@
 // Custom JavaScript: This is where you add interactivity to your website
 
+// helper functions to obtain url and handle errors
+function getUrl() {
+  return `http://localhost:5000/`
+}
+
+function getLeaderboard() {
+  let url = `${getUrl()}players/leaderboard`
+
+  console.log(`Leaderboard Requested From: ${url}`)
+
+
+fetch(url)
+  .then(res => res.json())
+  .then(data => {
+    console.log(data);
+  })
+  .catch(err => {
+    console.error(err);
+  });
+
+}
+
+
+
 // This event listener waits for the entire HTML page to load before running any code
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Page loaded!");
@@ -15,6 +39,9 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Welcome! This is your starting point.");
     });
   }
+
+  // code to return leaderboard
+  getLeaderboard()
 });
 
 //code to return vals form buttons
