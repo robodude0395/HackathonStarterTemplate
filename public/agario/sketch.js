@@ -47,7 +47,7 @@ function mousePressed() {
 }
 
 function setup() {
-  createCanvas(800, 800);
+  createCanvas(windowWidth, windowHeight);
 
   // Get player info from URL - now storing in global variables
   playerName = getUrlParameter('name') || 'Anonymous';
@@ -191,4 +191,8 @@ function draw() {
       }
     }
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
