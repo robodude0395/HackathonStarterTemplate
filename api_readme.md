@@ -29,8 +29,7 @@ Any changes to the files will automatically reflect in the browser upon refresh.
 - `/players` - Get all players currently stored in the json file
 - `/players/<int:id>` : Get player by given id
 - `/players/leaderboard` : Get leaderboard of top players, max number as defined in global variable in `api.py`
-- `/players/add` : add new player to player data
-
-        /players/<int:id>/update : patch or delete player by id
+- `/players/add` : Post new player to player data in storage json
+- `/players/<int:id>/update` : Patch or Delete player by given id
 
 
