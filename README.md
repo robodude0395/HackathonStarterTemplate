@@ -1,22 +1,12 @@
-# Hackathon Starter Template
+# Sigmar.io
 
-This is my evil plan to destroy the world!
+Eat the dots. Grow. Watch everything else Shrink.
 
-A simple HTML/CSS/JavaScript starter template with Bootstrap for building websites quickly.
-
-## Project Structure
+## Project Frontend Structure
 
 - `index.html` - Main HTML file with Bootstrap and responsive layout
 - `styles.css` - Custom CSS styles
 - `script.js` - JavaScript for interactivity
-
-## Comments
-
-We've added comments to this template to help you understand the structure and functionality of the code.
-
-These can be safely removed once you're comfortable with the setup.
-
-## Getting Started
 
 ### Running the Project
 
@@ -30,25 +20,40 @@ Then open `http://localhost:8000` in your browser.
 
 Any changes to the files will automatically reflect in the browser upon refresh.
 
-#### Auto-Reload
 
-To enable auto-reloading during development, you can use a tool like [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) in VSCode.
+## Guide for using api.py
 
-When install, click the "Go Live" button at the bottom-right corner of VSCode to start the server with auto-reload functionality.
+This guide discusses two files: `api.py` and helper module `storage.py`.
+requirements.txt includes the flask module needed to run this.
 
-You will then be able to see changes in real-time as you edit your files.
+## Project Backend Structure
 
-Go to `http://localhost:5500` (or the port specified by Live Server) to view your project.
+- `api.py` - Backend module for all GET, POST, PATCH, and DELETE routes using Flask
+- `storage.py` - Helper module for saving and loading json files
+- `players.json` - Database of players (not included in repo)
 
-## Customization
+## Defining JSON Storage
 
-- Edit `index.html` to modify content and structure
-- Edit `styles.css` to customize colors and styling
-- Edit `script.js` to add interactive features
+The filepath for the destination json file to store all players is defined in `storage.py`. This repository stores player data in `players.json`.
 
-## Technologies Used
+## Running the Backend
 
-- HTML5
-- CSS3
-- JavaScript (Vanilla)
-- [Bootstrap 5](https://getbootstrap.com/)
+Run a local server using python.
+
+```bash
+python api.py
+```
+
+Then open `http://localhost:5000` in your browser.
+
+Any changes to the files will automatically reflect in the browser upon refresh.
+
+## API Routes
+
+- `/players` - Get all players currently stored in the json file
+- `/players/<int:id>` : Get player by given id
+- `/players/leaderboard` : Get leaderboard of top players, max number as defined in global variable in `api.py`
+- `/players/add` : Post new player to player data in storage json
+- `/players/<int:id>/update` : Patch or Delete player by given id
+
+

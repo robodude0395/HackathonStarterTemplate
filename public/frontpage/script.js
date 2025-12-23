@@ -1,5 +1,54 @@
 // Custom JavaScript: This is where you add interactivity to your website
 
+// helper functions to obtain url and handle errors
+function getUrl() {
+  return `http://localhost:5000/`
+}
+
+function getLeaderboard() {
+  let url = `${getUrl()}players/leaderboard`
+
+  console.log(`Leaderboard Requested From: ${url}`)
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);
+    })
+    .catch(err => {
+      console.error(err);
+    });
+
+}
+
+// add new player
+
+async function postPlayer(playerName, color) {
+
+  let url = `${getUrl()}players/add`
+
+  console.log(`Players POST url: ${url}`)
+  
+  const rawRes = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      "name":playerName,
+      "colour":color
+    }),
+    credentials: 'include'
+  })
+
+  const data = await rawRes.json()
+
+  console.log(data)
+}
+
+//code to return vals form buttons
+
+const startGameBtn = document.getElementById("startGameBtn");
+const playerNameInput = document.getElementById("playerName");
+
 // This event listener waits for the entire HTML page to load before running any code
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Page loaded!");
@@ -15,12 +64,11 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Welcome! This is your starting point.");
     });
   }
+
+  // code to return leaderboard
+  getLeaderboard()
 });
 
-//code to return vals form buttons
-
-const startGameBtn = document.getElementById("startGameBtn");
-const playerNameInput = document.getElementById("playerName");
 
 // Listen for button click
 startGameBtn.addEventListener("click", () => {
@@ -34,19 +82,22 @@ startGameBtn.addEventListener("click", () => {
   const timestamp = Date.now();
 
   console.log("Player name:", playerName);
-  console.log("Selected colour:", color);
-  console.log("Timestamp:", timestamp);
+  const now = new Date();
+  const timeString = now.toLocaleTimeString(); // e.g., "14:35:07"
+  console.log(`Start Game clicked at ${timeString}`);
+  
+  // Find colour
+  const colorButtons = document.querySelectorAll('input[name="color"]');
 
-  // Store data in URL parameters and redirect to agario page
-  window.location.href = `/agario/index.html?name=${encodeURIComponent(playerName)}&color=${color}&timestamp=${timestamp}`;
-});
-
-
-const colorButtons = document.querySelectorAll('input[name="color"]');
-
-// Add a change listener to each one
-colorButtons.forEach(button => {
-  button.addEventListener("change", () => {
-    console.log("Selected colour:", button.value);
+  // Add a change listener to each one
+  colorButtons.forEach(button => {
+    if (button.checked) {
+      const color = button.value
+      console.log("Selected colour:", color);
+      postPlayer(playerName, color)
+    } 
   });
 });
+
+
+
