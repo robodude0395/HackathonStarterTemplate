@@ -34,7 +34,7 @@ for(var i = 0; i < 1000; i++){
 
 // Backend functions
 function getUrl() { // stem for backend host - need to run api.py and node server together!
-  return `:5000/`
+  return `http://localhost:5000/`
 }
 
 async function postPlayer(playerId, playerName, color) {
