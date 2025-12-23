@@ -11,14 +11,14 @@ function getLeaderboard() {
   console.log(`Leaderboard Requested From: ${url}`)
 
 
-fetch(url)
-  .then(res => res.json())
-  .then(data => {
-    console.log(data);
-  })
-  .catch(err => {
-    console.error(err);
-  });
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);
+    })
+    .catch(err => {
+      console.error(err);
+    });
 
 }
 
