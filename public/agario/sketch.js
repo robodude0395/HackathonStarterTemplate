@@ -10,11 +10,24 @@ var zoom = 1;
 
 var starting_radius = 64;
 
+function getUrlParameter(name){
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(name);
+}
+
 function setup() {
   createCanvas(800, 800);
+
+  // Get player info from URL
+  const playerName = getUrlParameter('name') || 'Anonymous';
+  const playerColor = getUrlParameter('color') || 'red';
+  const timestamp = getUrlParameter('timestamp');
+
+  console.log(playerName + ", " + playerColor + ", " + timestamp);
+
   player_blob = new AgarBlob(random(width), random(height) , starting_radius, color(255, 0, 0));
 
-  socket = io.connect('http://35.177.38.169:8000/');
+  socket = io.connect('http://localhost:8000/');
 
   var data = {
     x: player_blob.pos.x,

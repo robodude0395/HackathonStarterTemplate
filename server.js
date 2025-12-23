@@ -5,6 +5,7 @@ function BlobData(id, x, y, r){
     this.x = x;
     this.y = y;
     this.r = r;
+    this.name =
 }
 
 //Express is essentially Flask for JS
@@ -12,8 +13,8 @@ var express = require('express'); //Import express module
 var app = express();
 var server = app.listen(8000);
 
-app.use(express.static('./public/agario')); //Return public files users are meant to see
-
+app.use(express.static('./public/frontpage')); //Return public files users are meant to see
+app.use('/agario', express.static('./public/agario'));
 var socket = require('socket.io');
 
 var io = socket(server);

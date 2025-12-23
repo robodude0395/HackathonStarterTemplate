@@ -24,12 +24,21 @@ const playerNameInput = document.getElementById("playerName");
 
 // Listen for button click
 startGameBtn.addEventListener("click", () => {
-  const playerName = playerNameInput.value;
+  const playerName = playerNameInput.value || "Anonymous";
+
+  // Get selected color
+  const selectedColor = document.querySelector('input[name="color"]:checked');
+  const color = selectedColor ? selectedColor.value : "red";
+
+  // Get timestamp
+  const timestamp = Date.now();
 
   console.log("Player name:", playerName);
-  const now = new Date();
-  const timeString = now.toLocaleTimeString(); // e.g., "14:35:07"
-  console.log(`Start Game clicked at ${timeString}`);
+  console.log("Selected colour:", color);
+  console.log("Timestamp:", timestamp);
+
+  // Store data in URL parameters and redirect to agario page
+  window.location.href = `/agario/index.html?name=${encodeURIComponent(playerName)}&color=${color}&timestamp=${timestamp}`;
 });
 
 
