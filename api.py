@@ -17,7 +17,9 @@ CORS(
     supports_credentials=True,
     origins=[
         "http://localhost:8000",
-        "http://[::]:8000"
+        "http://localhost:5000",
+        "http://[::]:8000",
+        "http://[::]:5000"
     ]
 )
 

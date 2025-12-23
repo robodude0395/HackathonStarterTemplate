@@ -63,7 +63,6 @@ startGameBtn.addEventListener("click", () => {
   const timeString = now.toLocaleTimeString(); // e.g., "14:35:07"
   console.log(`Start Game clicked at ${timeString}`);
   
-  postPlayer(playerName, color)
 });
 
 
