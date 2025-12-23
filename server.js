@@ -1,11 +1,13 @@
 var players = {};  // Changed from array to object/dictionary
 
-function BlobData(id, x, y, r){
+function BlobData(id, x, y, r, name, color, timestamp){
     this.id = id;
     this.x = x;
     this.y = y;
     this.r = r;
-    this.name =
+    this.name = name || 'Anonymous';
+    this.color = color || 'red';
+    this.timestamp = timestamp;
 }
 
 //Express is essentially Flask for JS
@@ -29,9 +31,9 @@ io.sockets.on('connection', newConnection);
 
 function newConnection(socket){
     socket.on('start', function(data){
-        var player = new BlobData(socket.id, data.x, data.y, data.r);  // Fixed: was creating string instead of object, added 'var'
-        console.log(player);
-        players[socket.id] = player;  // Dictionary lookup by ID
+        var player = new BlobData(socket.id, data.x, data.y, data.r, data.name, data.color, data.timestamp);
+        console.log('New player:', player);
+        players[socket.id] = player;
     });
 
     socket.on('update', function(data){
