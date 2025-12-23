@@ -1,38 +1,47 @@
 var socket;
-
 var player_blob;
-
 var players = [];
-
 var padding = 100;
-
 var zoom = 1;
-
 var starting_radius = 64;
+
+// Make these global so they can be used in draw()
+var playerName;
+var playerColor;
 
 function getUrlParameter(name){
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(name);
 }
 
+function parseColorString(colorStr) {
+  // Remove parentheses and split by comma
+  const parts = colorStr.replace(/[()]/g, '').split(',');
+  return parts.map(part => parseInt(part.trim()));
+}
+
 function setup() {
   createCanvas(800, 800);
 
-  // Get player info from URL
-  const playerName = getUrlParameter('name') || 'Anonymous';
-  const playerColor = getUrlParameter('color') || 'red';
+  // Get player info from URL - now storing in global variables
+  playerName = getUrlParameter('name') || 'Anonymous';
+  playerColor = parseColorString(getUrlParameter('color') || 'red');
   const timestamp = getUrlParameter('timestamp');
 
-  console.log(playerName + ", " + playerColor + ", " + timestamp);
+  console.log(playerColor[0] + " " + playerColor[1] + " " + playerColor[2]);
 
-  player_blob = new AgarBlob(random(width), random(height) , starting_radius, color(255, 0, 0));
+  const blobColor = color(playerColor[0], playerColor[1], playerColor[2]) || color(255, 0, 0);
+  player_blob = new AgarBlob(random(width), random(height) , starting_radius, blobColor);
 
-  socket = io.connect('http://localhost:8000/');
+  socket = io.connect('http://35.177.38.169:8000/');
 
   var data = {
     x: player_blob.pos.x,
     y: player_blob.pos.y,
-    r : player_blob.r
+    r: player_blob.r,
+    name: playerName,
+    color: playerColor,
+    timestamp: timestamp
   };
 
   socket.emit('start', data);
@@ -58,7 +67,9 @@ function draw() {
   var data = {
     x: player_blob.pos.x,
     y: player_blob.pos.y,
-    r : player_blob.r
+    r: player_blob.r,
+    name: playerName,
+    color: playerColor
   };
 
   socket.emit('update', data);
@@ -78,22 +89,24 @@ function draw() {
   fill(255);
   textAlign(CENTER);
   strokeWeight(1);  // Border thickness
-  text(socket.id, player_blob.pos.x, player_blob.pos.y + player_blob.r+15);  // Fixed: was just 'r'
+  text(playerName, player_blob.pos.x, player_blob.pos.y + player_blob.r+15);  // Fixed: was just 'r'
 
   // Iterate through players object/dictionary
   for (var id in players){
     if(id == socket.id){
       continue;
     }
-    var other_player = players[id];  // Get the player object by key
+    var other_player = players[id];
     console.log(other_player);
-    fill(0, 0, 255);
-    strokeWeight(5);  // Border thickness
+
+    // Use the color array directly
+    fill(other_player.color);
+    strokeWeight(5);
     ellipse(other_player.x, other_player.y, other_player.r*2, other_player.r*2);
 
     fill(255);
     textAlign(CENTER);
-    strokeWeight(1);  // Border thickness
-    text(other_player.id, other_player.x, other_player.y + other_player.r+15);  // Fixed: was just 'r'
+    strokeWeight(1);
+    text(other_player.name || other_player.id, other_player.x, other_player.y + other_player.r+15);
   }
 }
