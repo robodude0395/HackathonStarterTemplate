@@ -10,7 +10,6 @@ function getLeaderboard() {
 
   console.log(`Leaderboard Requested From: ${url}`)
 
-
   fetch(url)
     .then(res => res.json())
     .then(data => {
@@ -22,7 +21,33 @@ function getLeaderboard() {
 
 }
 
+// add new player
 
+async function postPlayer(playerName, color) {
+
+  let url = `${getUrl()}players/add`
+
+  console.log(`Players POST url: ${url}`)
+  
+  const rawRes = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      "name":playerName,
+      "colour":color
+    }),
+    credentials: 'include'
+  })
+
+  const data = await rawRes.json()
+
+  console.log(data)
+}
+
+//code to return vals form buttons
+
+const startGameBtn = document.getElementById("startGameBtn");
+const playerNameInput = document.getElementById("playerName");
 
 // This event listener waits for the entire HTML page to load before running any code
 document.addEventListener("DOMContentLoaded", function () {
@@ -44,10 +69,6 @@ document.addEventListener("DOMContentLoaded", function () {
   getLeaderboard()
 });
 
-//code to return vals form buttons
-
-const startGameBtn = document.getElementById("startGameBtn");
-const playerNameInput = document.getElementById("playerName");
 
 // Listen for button click
 startGameBtn.addEventListener("click", () => {
@@ -57,14 +78,19 @@ startGameBtn.addEventListener("click", () => {
   const now = new Date();
   const timeString = now.toLocaleTimeString(); // e.g., "14:35:07"
   console.log(`Start Game clicked at ${timeString}`);
-});
+  
+  // Find colour
+  const colorButtons = document.querySelectorAll('input[name="color"]');
 
-
-const colorButtons = document.querySelectorAll('input[name="color"]');
-
-// Add a change listener to each one
-colorButtons.forEach(button => {
-  button.addEventListener("change", () => {
-    console.log("Selected colour:", button.value);
+  // Add a change listener to each one
+  colorButtons.forEach(button => {
+    if (button.checked) {
+      const color = button.value
+      console.log("Selected colour:", color);
+      postPlayer(playerName, color)
+    } 
   });
 });
+
+
+
