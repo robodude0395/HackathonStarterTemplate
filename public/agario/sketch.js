@@ -120,8 +120,9 @@ function draw() {
 
   fill(255);
   textAlign(CENTER);
-  strokeWeight(1);  // Border thickness
-  text(playerName, player_blob.pos.x, player_blob.pos.y + player_blob.r+15);  // Fixed: was just 'r'
+  strokeWeight(1);
+  textSize(16 / zoom);  // Adjust text size inversely to zoom
+  text(playerName, player_blob.pos.x, player_blob.pos.y + player_blob.r+15);
 
   // Iterate through players object/dictionary
   for (var id in players){
@@ -138,6 +139,7 @@ function draw() {
     fill(255);
     textAlign(CENTER);
     strokeWeight(1);
+    textSize(16 / zoom);  // Adjust text size inversely to zoom
     text(other_player.name || other_player.id, other_player.x, other_player.y + other_player.r+15);
 
     // Check collision with other players (only if not already dead)

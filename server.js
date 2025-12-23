@@ -42,7 +42,7 @@ async function postPlayer(playerId, playerName, color) {
   let url = `${getUrl()}players/add`
 
   console.log(`Players POST url: ${url}`)
-  
+
   const rawRes = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -64,7 +64,7 @@ async function deletePlayer(playerId) {
   let url = `${getUrl()}players/${playerId}/update`
 
   console.log(`Players DELETE url: ${url}`)
-  
+
   const rawRes = await fetch(url, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
@@ -81,7 +81,7 @@ async function updatePlayer(playerId, playerScore, updateTimestamp) {
   let url = `${getUrl()}players/${playerId}/update`
 
   console.log(`Players PATCH url: ${url}`)
-  
+
   const rawRes = await fetch(url, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
@@ -171,7 +171,7 @@ function newConnection(socket){
         delete players[socket.id];
         console.log('Player disconnected: ' + socket.id);
 
-        //DEV LEADERBOARD DISCONNECT CODE BELOW  
+        //DEV LEADERBOARD DISCONNECT CODE BELOW
         deletePlayer(socket.id)
 
     });

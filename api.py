@@ -26,11 +26,11 @@ CORS(
 def player():
     """API home page with instruction"""
     api_help = """
-        
+
         /players : get all players
-    
+
         /players/<int:id> : get player by id
-    
+
         /players/leaderboard : get leaderboard of top players
 
         /players/add : add new player to player data
