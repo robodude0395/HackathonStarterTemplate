@@ -15,55 +15,27 @@
   </head>
 
   <body>
-<!-- Leaderboard container -->
-    <div class="col-md-4">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title text-center">🏆 Leaderboard</h5>
-          <div class="list-group list-group-flush" id="leaderboard-container">
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-              <span><span class="badge bg-warning text-dark me-2">1</span><span class="player-name">---</span></span>
-              <span class="badge bg-primary rounded-pill">0</span>
-            </div>
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-              <span><span class="badge bg-secondary me-2">2</span><span class="player-name">---</span></span>
-              <span class="badge bg-primary rounded-pill">0</span>
-            </div>
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-              <span><span class="badge bg-secondary me-2">3</span><span class="player-name">---</span></span>
-              <span class="badge bg-primary rounded-pill">0</span>
-            </div>
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-              <span><span class="badge bg-secondary me-2">4</span><span class="player-name">---</span></span>
-              <span class="badge bg-primary rounded-pill">0</span>
-            </div>
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-              <span><span class="badge bg-secondary me-2">5</span><span class="player-name">---</span></span>
-              <span class="badge bg-primary rounded-pill">0</span>
-            </div>
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-              <span><span class="badge bg-secondary me-2">6</span><span class="player-name">---</span></span>
-              <span class="badge bg-primary rounded-pill">0</span>
-            </div>
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-              <span><span class="badge bg-secondary me-2">7</span><span class="player-name">---</span></span>
-              <span class="badge bg-primary rounded-pill">0</span>
-            </div>
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-              <span><span class="badge bg-secondary me-2">8</span><span class="player-name">---</span></span>
-              <span class="badge bg-primary rounded-pill">0</span>
-            </div>
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-              <span><span class="badge bg-secondary me-2">9</span><span class="player-name">---</span></span>
-              <span class="badge bg-primary rounded-pill">0</span>
-            </div>
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-              <span><span class="badge bg-secondary me-2">10</span><span class="player-name">---</span></span>
-              <span class="badge bg-primary rounded-pill">0</span>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- Leaderboard overlay -->
+    <div id="leaderboard-container">
+      <h3>🏆 Leaderboard</h3>
+      <ul id="leaderboard-list">
+        <li><span class="rank">1</span> <span class="player-name">---</span> <span class="score">0</span></li>
+        <li><span class="rank">2</span> <span class="player-name">---</span> <span class="score">0</span></li>
+        <li><span class="rank">3</span> <span class="player-name">---</span> <span class="score">0</span></li>
+        <li><span class="rank">4</span> <span class="player-name">---</span> <span class="score">0</span></li>
+        <li><span class="rank">5</span> <span class="player-name">---</span> <span class="score">0</span></li>
+        <li><span class="rank">6</span> <span class="player-name">---</span> <span class="score">0</span></li>
+        <li><span class="rank">7</span> <span class="player-name">---</span> <span class="score">0</span></li>
+        <li><span class="rank">8</span> <span class="player-name">---</span> <span class="score">0</span></li>
+        <li><span class="rank">9</span> <span class="player-name">---</span> <span class="score">0</span></li>
+        <li><span class="rank">10</span> <span class="player-name">---</span> <span class="score">0</span></li>
+      </ul>
+    </div>
+
+    <!-- Score display -->
+    <div id="score-container">
+      <div id="score-label">Your Score:</div>
+      <div id="score-value">0</div>
     </div>
 
     <script src="sketch.js"></script>

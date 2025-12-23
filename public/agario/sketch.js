@@ -60,6 +60,7 @@ function setup() {
   player_blob = new AgarBlob(random(-3200, 3200), random(-3200, 3200), starting_radius, blobColor);
 
   socket = io.connect('http://hackathon-team-6-lb-706940063.eu-west-2.elb.amazonaws.com:80/');
+  //socket = io.connect('http://localhost:8000/');
 
   var data = {
     x: player_blob.pos.x,
@@ -80,6 +81,10 @@ function setup() {
   )
 }
 
+function calculateScore(radius) {
+  return Math.round(PI * Math.pow(radius, 2));
+}
+
 function draw() {
   // If dead, show death screen
   if (isDead) {
@@ -88,7 +93,6 @@ function draw() {
   }
 
   //UPDATE
-  player_blob.update();
   player_blob.update();
   //Translate origin so that camera stays fixed to player blob
   translate(width/2, height/2);
@@ -108,12 +112,16 @@ function draw() {
 
   socket.emit('update', data);
 
+   // Update score display
+  const playerScore = calculateScore(player_blob.r);
+  document.getElementById('score-value').textContent = playerScore;
+
   //DRAW
   background(0);
   stroke(255);  // White border
   strokeWeight(5);  // Border thickness
   noFill();  // No fill, just outline
-  rect(-(width*4)-padding, -(height*4)-padding, (width*8) + padding, (height*8) + padding);  // Border rectangle
+  rect(-3200-padding, -3200-padding, 6400 + padding*2, 6400 + padding*2);  // Border rectangle
 
   player_blob.constrain();
   player_blob.show();
@@ -122,7 +130,7 @@ function draw() {
   textAlign(CENTER);
   strokeWeight(1);
   textSize(16 / zoom);  // Adjust text size inversely to zoom
-  text(playerName, player_blob.pos.x, player_blob.pos.y + player_blob.r+15);
+  text(playerName, player_blob.pos.x, player_blob.pos.y + player_blob.r+25);
 
   // Iterate through players object/dictionary
   for (var id in players){
@@ -140,7 +148,7 @@ function draw() {
     textAlign(CENTER);
     strokeWeight(1);
     textSize(16 / zoom);  // Adjust text size inversely to zoom
-    text(other_player.name || other_player.id, other_player.x, other_player.y + other_player.r+15);
+    text(other_player.name || other_player.id, other_player.x, other_player.y + other_player.r+25);
 
     // Check collision with other players (only if not already dead)
     if (!isDead) {
@@ -196,3 +204,38 @@ function draw() {
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
+
+// Update leaderboard on client side
+function updateLeaderboard(leaderboardData) {
+  const listItems = document.querySelectorAll('#leaderboard-list li');
+
+  leaderboardData.forEach((player, index) => {
+    if (index < 10) {
+      const rankSpan = listItems[index].querySelector('.rank');
+      const nameSpan = listItems[index].querySelector('.player-name');
+      const scoreSpan = listItems[index].querySelector('.score');
+
+      rankSpan.textContent = index + 1;
+      nameSpan.textContent = player.name || '---';
+
+      // Calculate area from radius: area = π * r², rounded
+      const area = calculateScore(player.score);
+      scoreSpan.textContent = area;
+    }
+  });
+}
+
+// Fetch leaderboard from API and update
+async function fetchLeaderboard() {
+  try {
+    const response = await fetch('http://localhost:5000/players/leaderboard');
+    const leaderboard = await response.json();
+    updateLeaderboard(leaderboard);
+  } catch (error) {
+    console.error('Error fetching leaderboard:', error);
+  }
+}
+
+// Update leaderboard every 5 seconds
+setInterval(fetchLeaderboard, 5000);
+fetchLeaderboard(); // Initial load

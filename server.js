@@ -20,7 +20,7 @@ function FoodData(id, x, y, r, color){
 }
 
 // Generate initial food
-for(var i = 0; i < 1500; i++){
+for(var i = 0; i < 1000; i++){
     var x = Math.random() * 6400 - 3200;  // -3200 to 3200
     var y = Math.random() * 6400 - 3200;
     var r = Math.random() * 15 + 5;  // 5 to 20
@@ -34,7 +34,7 @@ for(var i = 0; i < 1500; i++){
 
 // Backend functions
 function getUrl() { // stem for backend host - need to run api.py and node server together!
-  return `http://localhost:5000/`
+  return `:5000/`
 }
 
 async function postPlayer(playerId, playerName, color) {
@@ -141,8 +141,8 @@ function newConnection(socket){
             blob.y = data.y;
             blob.r = data.r;
             if (blob.r > prevScore) {
-                const score = blob.r - prevScore
-                updatePlayer(socket.id, score, Date.now())
+                const score = blob.r;
+                updatePlayer(socket.id, score, Date.now());
             }
         }
     });

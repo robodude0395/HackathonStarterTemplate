@@ -1,0 +1,64 @@
+name: Hackathon Game Deployment
+
+on:
+  push:
+    branches: [ "main", "stable_merged_omar_dev_dev" ]
+  pull_request:
+    branches: [ "main", "stable_merged_omar_dev_dev" ]
+
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  deployments: write
+  issues: write
+  packages: write
+  pull-requests: write
+  repository-projects: write
+  security-events: write
+  statuses: write
+
+jobs:
+  deploy:
+    name: "Deploy to EC2"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Get repo"
+        uses: actions/checkout@v6
+
+      - name: "Deploy To Server"
+        uses: easingthemes/ssh-deploy@main
+        with:
+            SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            ARGS: "-rlgoDzvc -i"
+            REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+            REMOTE_USER: ${{ secrets.REMOTE_USER }}
+            TARGET: ${{ secrets.REMOTE_TARGET }}
+            EXCLUDE: "/node_modules/, /.git/, /venv/, /__pycache__/"
+            SCRIPT_AFTER: |
+              whoami
+              ls -al
+              cd ${{ secrets.REMOTE_TARGET }}
+
+              # Kill existing processes
+              pkill -f api.py || echo "No api.py process found"
+              pkill -f server.js || echo "No server.js process found"
+
+              # Wait for processes to stop
+              sleep 2
+
+              # Start api.py in background with nohup
+              nohup python3 api.py > api.log 2>&1 &
+
+              # Start server.js in background with nohup
+              nohup node server.js > server.log 2>&1 &
+
+              # Wait a moment for processes to start
+              sleep 2
+
+              # Confirm they are running
+              echo "Checking running processes:"
+              ps aux | grep '[a]pi.py'
+              ps aux | grep '[s]erver.js'
+
+              echo "Deployment complete!"

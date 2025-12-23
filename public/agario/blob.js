@@ -6,7 +6,7 @@ function AgarBlob(x, y, radius, colour){
 
     //player blob parameters
     this.max_speed = 20;
-    this.min_speed = 0.3;
+    this.min_speed = 1;
     this.min_radius = radius;
     this.current_speed = this.max_speed;
     this.growth_slow_down_rate = 5;
@@ -48,7 +48,7 @@ function AgarBlob(x, y, radius, colour){
     }
 
     this.constrain = function(){
-        this.pos.x = constrain(this.pos.x, -(width*4)-100, (width*4));
-        this.pos.y = constrain(this.pos.y, -(height*4)-100, (height*4));
+        this.pos.x = constrain(this.pos.x, -3200, 3200);
+        this.pos.y = constrain(this.pos.y, -3200, 3200);
     }
 }
