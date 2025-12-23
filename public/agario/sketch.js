@@ -228,7 +228,7 @@ function updateLeaderboard(leaderboardData) {
 // Fetch leaderboard from API and update
 async function fetchLeaderboard() {
   try {
-    const response = await fetch('http://localhost:5000/players/leaderboard');
+    const response = await fetch('http://hackathon-team-6-lb-706940063.eu-west-2.elb.amazonaws.com:5000/players/leaderboard');
     const leaderboard = await response.json();
     updateLeaderboard(leaderboard);
   } catch (error) {
