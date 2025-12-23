@@ -1,5 +1,7 @@
 # Hackathon Super Awesome template title changed by Dev WOW
 
+This is my evil plan to destroy the world!
+
 A simple HTML/CSS/JavaScript starter template with Bootstrap for building websites quickly.
 
 ## Project Structure
