@@ -57,7 +57,7 @@ function setup() {
   console.log(playerColor[0] + " " + playerColor[1] + " " + playerColor[2]);
 
   const blobColor = color(playerColor[0], playerColor[1], playerColor[2]) || color(255, 0, 0);
-  player_blob = new AgarBlob(random(-width*4, width*4), random(-height*4, height*4) , starting_radius, blobColor);
+  player_blob = new AgarBlob(random(-3200, 3200), random(-3200, 3200), starting_radius, blobColor);
 
   socket = io.connect('http://hackathon-team-6-lb-706940063.eu-west-2.elb.amazonaws.com:80/');
 
