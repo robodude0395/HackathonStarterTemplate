@@ -79,6 +79,27 @@ function setup() {
       food = data.food;
     }
   )
+
+  // Listen for leaderboard updates from server
+  socket.on('leaderboard_update', function(leaderboard) {
+    console.log('Received leaderboard:', leaderboard);
+    const listItems = document.querySelectorAll('#leaderboard-list li');
+
+    leaderboard.forEach((player, index) => {
+      if (index < 10) {
+        const rankSpan = listItems[index].querySelector('.rank');
+        const nameSpan = listItems[index].querySelector('.player-name');
+        const scoreSpan = listItems[index].querySelector('.score');
+
+        rankSpan.textContent = index + 1;
+        nameSpan.textContent = player.name || '---';
+
+        // Calculate area from radius: area = π * r², rounded
+        const area = calculateScore(player.score);
+        scoreSpan.textContent = area;
+      }
+    });
+  });
 }
 
 function calculateScore(radius) {
@@ -164,27 +185,6 @@ function draw() {
 
           // Notify server that this player was eaten
           socket.emit('player_eaten', { eatenId: id });
-
-          // Listen for leaderboard updates from server
-          socket.on('leaderboard_update', function(leaderboard) {
-            console.log(leaderboard);
-            const listItems = document.querySelectorAll('#leaderboard-list li');
-
-            leaderboard.forEach((player, index) => {
-              if (index < 10) {
-                const rankSpan = listItems[index].querySelector('.rank');
-                const nameSpan = listItems[index].querySelector('.player-name');
-                const scoreSpan = listItems[index].querySelector('.score');
-
-                rankSpan.textContent = index + 1;
-                nameSpan.textContent = player.name || '---';
-
-                // Calculate area from radius: area = π * r², rounded
-                const area = calculateScore(player.score);
-                scoreSpan.textContent = area;
-              }
-            });
-          });
         }
         // If other player is bigger, you got eaten
         else if (other_player.r > player_blob.r) {

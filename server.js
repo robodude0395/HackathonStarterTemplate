@@ -57,13 +57,6 @@ async function getLeaderboard() {
   }
 }
 
-// After the heartbeat setInterval, add this:
-// Broadcast leaderboard every 3 seconds
-setInterval(async () => {
-  const leaderboard = await getLeaderboard();
-  io.sockets.emit('leaderboard_update', leaderboard);
-}, 3000);
-
 async function postPlayer(playerId, playerName, color) {
 
   let url = `${getUrl()}players/add`
@@ -136,6 +129,13 @@ var socket = require('socket.io');
 var io = socket(server);
 
 setInterval(heartbeat, 33);
+
+// Broadcast leaderboard every 3 seconds
+setInterval(async () => {
+  const leaderboard = await getLeaderboard();
+  console.log('Broadcasting leaderboard:', leaderboard);
+  io.sockets.emit('leaderboard_update', leaderboard);
+}, 3000);
 
 function heartbeat(){
     io.sockets.emit('heartbeat', { players: players, food: food });
