@@ -59,7 +59,7 @@ function setup() {
   const blobColor = color(playerColor[0], playerColor[1], playerColor[2]) || color(255, 0, 0);
   player_blob = new AgarBlob(random(width), random(height) , starting_radius, blobColor);
 
-  socket = io.connect('http://localhost:8000/');
+  socket = io.connect('http://hackathon-team-6-lb-706940063.eu-west-2.elb.amazonaws.com:8000/');
 
   var data = {
     x: player_blob.pos.x,
