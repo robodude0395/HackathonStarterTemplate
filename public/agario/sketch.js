@@ -8,6 +8,8 @@ var starting_radius = 64;
 // Make these global so they can be used in draw()
 var playerName;
 var playerColor;
+var food = [];
+var isDead = false;
 
 function getUrlParameter(name){
   const urlParams = new URLSearchParams(window.location.search);
@@ -18,6 +20,30 @@ function parseColorString(colorStr) {
   // Remove parentheses and split by comma
   const parts = colorStr.replace(/[()]/g, '').split(',');
   return parts.map(part => parseInt(part.trim()));
+}
+
+function drawDeathScreen() {
+  // Reset transformations
+  resetMatrix();
+
+  // Grey overlay
+  background(0, 0, 0, 200);
+
+  // Death message
+  fill(255);
+  textAlign(CENTER, CENTER);
+  textSize(48);
+  text("You Were Eaten!", width/2, height/2 - 50);
+
+  textSize(24);
+  text("Click to return to menu", width/2, height/2 + 50);
+}
+
+function mousePressed() {
+  if (isDead) {
+    // Redirect back to frontpage
+    window.location.href = '/';
+  }
 }
 
 function setup() {
@@ -48,13 +74,21 @@ function setup() {
 
   socket.on('heartbeat',
     function(data){
-      players = data;
+      players = data.players;
+      food = data.food;
     }
   )
 }
 
 function draw() {
+  // If dead, show death screen
+  if (isDead) {
+    drawDeathScreen();
+    return;  // Stop the rest of draw from executing
+  }
+
   //UPDATE
+  player_blob.update();
   player_blob.update();
   //Translate origin so that camera stays fixed to player blob
   translate(width/2, height/2);
@@ -84,8 +118,6 @@ function draw() {
   player_blob.constrain();
   player_blob.show();
 
-  console.log(players);
-
   fill(255);
   textAlign(CENTER);
   strokeWeight(1);  // Border thickness
@@ -97,10 +129,9 @@ function draw() {
       continue;
     }
     var other_player = players[id];
-    console.log(other_player);
 
     // Use the color array directly
-    fill(other_player.color);
+    fill(other_player.color[0], other_player.color[1], other_player.color[2]);
     strokeWeight(5);
     ellipse(other_player.x, other_player.y, other_player.r*2, other_player.r*2);
 
@@ -108,5 +139,54 @@ function draw() {
     textAlign(CENTER);
     strokeWeight(1);
     text(other_player.name || other_player.id, other_player.x, other_player.y + other_player.r+15);
+
+    // Check collision with other players (only if not already dead)
+    if (!isDead) {
+      var other_pos = createVector(other_player.x, other_player.y);
+      var d = p5.Vector.dist(player_blob.pos, other_pos);
+
+      if (d < player_blob.r + other_player.r) {
+        // If player is bigger, eat the other player
+        if (player_blob.r > other_player.r) {
+          player_blob.area += PI * pow(other_player.r, 2);
+          player_blob.r = player_blob.get_radius_from_volume();
+          player_blob.current_speed = player_blob.max_speed * pow(player_blob.min_radius / player_blob.r, 2) + player_blob.min_speed;
+
+          // Notify server that this player was eaten
+          socket.emit('player_eaten', { eatenId: id });
+        }
+        // If other player is bigger, you got eaten
+        else if (other_player.r > player_blob.r) {
+          isDead = true;
+          socket.emit('i_was_eaten', { killerId: id, killerName: other_player.name });
+        }
+      }
+    }
+  }
+
+  // Draw and check collision with food pellets
+  for (var i = 0; i < food.length; i++){
+    var foodItem = food[i];
+
+    // Draw food - foodItem.color is already an array [r, g, b]
+    fill(foodItem.color[0], foodItem.color[1], foodItem.color[2]);
+    noStroke();
+    ellipse(foodItem.x, foodItem.y, foodItem.r*2, foodItem.r*2);
+
+    // Check if player can eat this food
+    if (!isDead) {
+      var foodPos = createVector(foodItem.x, foodItem.y);
+      var d = p5.Vector.dist(player_blob.pos, foodPos);
+
+      if (d < player_blob.r + foodItem.r) {
+        // Eat the food
+        player_blob.area += PI * pow(foodItem.r, 2);
+        player_blob.r = player_blob.get_radius_from_volume();
+        player_blob.current_speed = player_blob.max_speed * pow(player_blob.min_radius / player_blob.r, 2) + player_blob.min_speed;
+
+        // Notify server
+        socket.emit('food_eaten', { foodId: foodItem.id });
+      }
+    }
   }
 }

@@ -9,7 +9,7 @@ function AgarBlob(x, y, radius, colour){
     this.min_speed = 0.3;
     this.min_radius = radius;
     this.current_speed = this.max_speed;
-    this.growth_slow_down_rate = 0.5;
+    this.growth_slow_down_rate = 5;
 
     //Velocity stuff
     this.vel = createVector(0, 0);
