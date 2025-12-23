@@ -37,6 +37,33 @@ function getUrl() { // stem for backend host - need to run api.py and node serve
   return `http://localhost:5000/`
 }
 
+// Add this function with the other backend functions
+async function getLeaderboard() {
+  try {
+    let url = `${getUrl()}players/leaderboard`;
+    console.log(`Leaderboard GET url: ${url}`);
+
+    const rawRes = await fetch(url, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include'
+    });
+
+    const data = await rawRes.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching leaderboard:', error);
+    return [];
+  }
+}
+
+// After the heartbeat setInterval, add this:
+// Broadcast leaderboard every 3 seconds
+setInterval(async () => {
+  const leaderboard = await getLeaderboard();
+  io.sockets.emit('leaderboard_update', leaderboard);
+}, 3000);
+
 async function postPlayer(playerId, playerName, color) {
 
   let url = `${getUrl()}players/add`

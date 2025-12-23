@@ -164,6 +164,26 @@ function draw() {
 
           // Notify server that this player was eaten
           socket.emit('player_eaten', { eatenId: id });
+
+          // Listen for leaderboard updates from server
+          socket.on('leaderboard_update', function(leaderboard) {
+            const listItems = document.querySelectorAll('#leaderboard-list li');
+
+            leaderboard.forEach((player, index) => {
+              if (index < 10) {
+                const rankSpan = listItems[index].querySelector('.rank');
+                const nameSpan = listItems[index].querySelector('.player-name');
+                const scoreSpan = listItems[index].querySelector('.score');
+
+                rankSpan.textContent = index + 1;
+                nameSpan.textContent = player.name || '---';
+
+                // Calculate area from radius: area = π * r², rounded
+                const area = calculateScore(player.score);
+                scoreSpan.textContent = area;
+              }
+            });
+          });
         }
         // If other player is bigger, you got eaten
         else if (other_player.r > player_blob.r) {
@@ -204,38 +224,3 @@ function draw() {
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
-
-// Update leaderboard on client side
-function updateLeaderboard(leaderboardData) {
-  const listItems = document.querySelectorAll('#leaderboard-list li');
-
-  leaderboardData.forEach((player, index) => {
-    if (index < 10) {
-      const rankSpan = listItems[index].querySelector('.rank');
-      const nameSpan = listItems[index].querySelector('.player-name');
-      const scoreSpan = listItems[index].querySelector('.score');
-
-      rankSpan.textContent = index + 1;
-      nameSpan.textContent = player.name || '---';
-
-      // Calculate area from radius: area = π * r², rounded
-      const area = calculateScore(player.score);
-      scoreSpan.textContent = area;
-    }
-  });
-}
-
-// Fetch leaderboard from API and update
-async function fetchLeaderboard() {
-  try {
-    const response = await fetch('http://hackathon-team-6-lb-706940063.eu-west-2.elb.amazonaws.com:5000/players/leaderboard');
-    const leaderboard = await response.json();
-    updateLeaderboard(leaderboard);
-  } catch (error) {
-    console.error('Error fetching leaderboard:', error);
-  }
-}
-
-// Update leaderboard every 3 seconds
-setInterval(fetchLeaderboard, 3000);
-fetchLeaderboard(); // Initial load
