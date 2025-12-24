@@ -141,7 +141,7 @@ function newConnection(socket){
             blob.y = data.y;
             blob.r = data.r;
             if (blob.r > prevScore) {
-                const score = blob.r - prevScore
+                const score = ((blob.r - prevScore) * 100).toFixed(0)
                 updatePlayer(socket.id, score, Date.now())
             }
         }
@@ -172,7 +172,7 @@ function newConnection(socket){
         console.log('Player disconnected: ' + socket.id);
 
         //DEV LEADERBOARD DISCONNECT CODE BELOW  
-        deletePlayer(socket.id)
+        // Maybe not on disconnect (record all time top score?)
 
     });
 
@@ -183,8 +183,10 @@ function newConnection(socket){
     });
 
     socket.on('i_was_eaten', function(data) {
+        
+    deletePlayer(socket.id) // remove from leaderboard if eaten
+        
     // Remove this player from the game
-    deletePlayer(socket.id) // remove from leaderboard
     delete players[socket.id];
     console.log(socket.id + ' was eaten by ' + data.killerId);
     });

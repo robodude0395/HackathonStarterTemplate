@@ -8,8 +8,7 @@ from storage import save_to_file, load_from_file
 
 BOARD_SIZE = 10  # number of players visible on the board
 EMPTY = "-"  # used when not enough players for full leaderboard
-
-player_data = load_from_file()
+DEFAULT_SCORE = {"name": EMPTY, "colour": EMPTY, "score": 0}
 
 app = Flask(__name__)
 CORS(
@@ -43,12 +42,14 @@ def player():
 @app.route("/players", methods=["GET"])
 def get_all_players():
     """Return all players"""
+    player_data = load_from_file()
     return player_data, 200
 
 
 @app.route("/players/<id>", methods=["GET"])
 def get_player_by_id(id):
     """Return player found with matching id"""
+    player_data = load_from_file()
     for player in player_data:
         if player.get("id") == id:
             return player, 200
@@ -59,6 +60,7 @@ def get_player_by_id(id):
 @app.route("/players/leaderboard", methods=["GET"])
 def get_player_leaderboard():
     """Return top players based on score"""
+    player_data = load_from_file()
     leaderboard = sorted(
         player_data, key=lambda player: player['score'], reverse=True)[:BOARD_SIZE]
 
@@ -66,7 +68,7 @@ def get_player_leaderboard():
     high_score_count = len(leaderboard)
     if high_score_count < BOARD_SIZE:
         for _ in range(BOARD_SIZE - high_score_count):
-            leaderboard.append({"name": EMPTY, "colour": EMPTY, "score": 0})
+            leaderboard.append(DEFAULT_SCORE)
 
     return leaderboard[:BOARD_SIZE], 200
 
@@ -85,6 +87,7 @@ def post_score():
     player['created_at'] = str(datetime.now())
     player['updated_at'] = str(datetime.now())  # to track when size changes
 
+    player_data = load_from_file()
     player_data.append(player)
     save_to_file(player_data)
     return player_data, 201
@@ -98,6 +101,7 @@ def update_player_by_id(id):
     if status_code != 200:
         return {"error": True, "message": f"No player with id {id} was found"}, 404
 
+    player_data = load_from_file()
     player_data.remove(player)
 
     if (request.method == "PATCH"):
