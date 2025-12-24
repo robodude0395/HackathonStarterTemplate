@@ -42,11 +42,26 @@ footer {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+
+#leaderboard{
+  padding-left: 20px;
+  height: auto;
+}
+
 #boardrow{
   width: 100%;
 	height: 40px;
 	border-bottom: 1px solid #AFAFAF;
+  background: #ecebcd;
 }
+/* Gold */
+#boardrow:nth-child(1) {background: gold;}
+/* Silver */
+#boardrow:nth-child(2) {background: #9f9c9c;}
+/* Bronze */
+#boardrow:nth-child(3) {background: #cd7f32;}
+
+
 
 .name {
 	width: 75%;
