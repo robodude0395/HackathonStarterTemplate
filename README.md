@@ -1,6 +1,9 @@
 # Sigmar.io
 
 Eat the dots. Grow. Watch everything else Shrink.
+Play the game [here](http://35.177.38.169:8000/).
+
+# Running the Project Locally
 
 ## Project Frontend Structure
 
