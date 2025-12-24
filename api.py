@@ -62,7 +62,7 @@ def get_player_leaderboard():
     """Return top players based on score"""
     player_data = load_from_file()
     leaderboard = sorted(
-        player_data, key=lambda player: player['score'], reverse=True)[:BOARD_SIZE]
+        player_data, key=lambda player: int(player['score']), reverse=True)[:BOARD_SIZE]
 
     # if not enough current players for board size
     high_score_count = len(leaderboard)

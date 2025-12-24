@@ -141,7 +141,7 @@ function newConnection(socket){
             blob.y = data.y;
             blob.r = data.r;
             if (blob.r > prevScore) {
-                const score = ((blob.r - prevScore) * 100).toFixed(0)
+                const score = ((prevScore + (blob.r - prevScore) )* 100).toFixed(0)
                 updatePlayer(socket.id, score, Date.now())
             }
         }
