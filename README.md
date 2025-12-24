@@ -2,6 +2,10 @@
 
 Eat the dots. Grow. Watch everything else Shrink.
 
+Play the game [here](http://35.177.38.169:8000/).
+
+# Running the Project Locally
+
 ## Project Frontend Structure
 
 - `index.html` - Main HTML file with Bootstrap and responsive layout
