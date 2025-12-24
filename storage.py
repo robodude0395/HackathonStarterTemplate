@@ -7,7 +7,7 @@ PLAYER_FILENAME = "players.json"
 
 def create_file() -> None:
     """Create the destination file if it doesn't exist"""
-    data = [{"name": '-', "colour": '-', "score": 0}]
+    data = [{"name": '-', "colour": '-', "score": 0}]  # empty base value
     with open(PLAYER_FILENAME, "w", encoding="utf-8") as file:
         dump(data, file, indent=2)
 
