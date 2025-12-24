@@ -5,6 +5,25 @@ function getUrl() {
   return `http://localhost:5000/`
 }
 
+
+function renderLeaderboard(players) {
+  const tbody = document.getElementById("leaderboard-body");
+  tbody.innerHTML = ""; // clear old data
+
+  players.forEach((player, index) => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td style="color:${player.colour}">${player.name}</td>
+      <td>${player.score}</td>
+    `;
+
+    tbody.appendChild(row);
+  });
+}
+
+
 function getLeaderboard() {
   let url = `${getUrl()}players/leaderboard`
 
@@ -13,7 +32,8 @@ function getLeaderboard() {
   fetch(url)
     .then(res => res.json())
     .then(data => {
-      console.log(data);
+      //console.log(data);
+      renderLeaderboard(data);
     })
     .catch(err => {
       console.error(err);

@@ -41,3 +41,18 @@ footer {
   transform: scale(0.96);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+#leaderboard {
+  border-collapse: collapse;
+  width: 300px;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 3px solid #000000;
+}
+
+th {
+  background-color: #ffffff;
+}
