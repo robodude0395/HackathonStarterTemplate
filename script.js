@@ -2,7 +2,7 @@
 
 // helper functions to obtain url and handle errors
 function getUrl() {
-  return `http://localhost:5000/`
+  return `http://35.177.38.169:5000/`
 }
 
 
@@ -13,10 +13,16 @@ function renderLeaderboard(players) {
   players.forEach((player, index) => {
     const row = document.createElement("tr");
 
+    let medal = "";
+    if (index === 0) medal = "🥇";
+    else if (index === 1) medal = "🥈";
+    else if (index === 2) medal = "🥉";
+
     row.innerHTML = `
-      <td>${index + 1}</td>
+      <td>${index + 1} ${medal}</td>
       <td style="color:${player.colour}">${player.name}</td>
-      <td>${player.score}</td>
+      <td>${Number(player.score).toFixed(2)}</td>
+
     `;
 
     tbody.appendChild(row);
@@ -93,7 +99,10 @@ document.addEventListener("DOMContentLoaded", function () {
 // Listen for button click
 startGameBtn.addEventListener("click", () => {
   const playerName = playerNameInput.value;
-
+  if (playerName === "") {
+    alert("Please enter your name before starting the game!");
+    return; // stops the rest of the code from running
+  }
   console.log("Player name:", playerName);
   const now = new Date();
   const timeString = now.toLocaleTimeString(); // e.g., "14:35:07"
