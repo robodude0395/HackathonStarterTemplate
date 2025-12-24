@@ -1,3 +1,6 @@
+*.pemkey
+.pemkey
+
 # Dependencies
 node_modules/
 

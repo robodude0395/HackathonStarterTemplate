@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sketch</title>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <script src="libraries/p5.min.js"></script>
+    <!-- <script src="libraries/p5.sound.min.js"></script> -->
+    <script src="blob.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+
+  <body>
+    <!-- Leaderboard overlay -->
+    <div id="leaderboard-container">
+      <h3>🏆 Leaderboard</h3>
+      <ul id="leaderboard-list">
+        <li><span class="rank">1</span> <span class="player-name">---</span> <span class="score">0</span></li>
+        <li><span class="rank">2</span> <span class="player-name">---</span> <span class="score">0</span></li>
+        <li><span class="rank">3</span> <span class="player-name">---</span> <span class="score">0</span></li>
+        <li><span class="rank">4</span> <span class="player-name">---</span> <span class="score">0</span></li>
+        <li><span class="rank">5</span> <span class="player-name">---</span> <span class="score">0</span></li>
+        <li><span class="rank">6</span> <span class="player-name">---</span> <span class="score">0</span></li>
+        <li><span class="rank">7</span> <span class="player-name">---</span> <span class="score">0</span></li>
+        <li><span class="rank">8</span> <span class="player-name">---</span> <span class="score">0</span></li>
+        <li><span class="rank">9</span> <span class="player-name">---</span> <span class="score">0</span></li>
+        <li><span class="rank">10</span> <span class="player-name">---</span> <span class="score">0</span></li>
+      </ul>
+    </div>
+
+    <!-- Score display -->
+    <div id="score-container">
+      <div id="score-label">Your Score:</div>
+      <div id="score-value">0</div>
+    </div>
+
+    <script src="sketch.js"></script>
+  </body>
+</html>

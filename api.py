@@ -26,11 +26,11 @@ CORS(
 def player():
     """API home page with instruction"""
     api_help = """
-        
+
         /players : get all players
-    
+
         /players/<int:id> : get player by id
-    
+
         /players/leaderboard : get leaderboard of top players
 
         /players/add : add new player to player data
@@ -46,7 +46,7 @@ def get_all_players():
     return player_data, 200
 
 
-@app.route("/players/<int:id>", methods=["GET"])
+@app.route("/players/<id>", methods=["GET"])
 def get_player_by_id(id):
     """Return player found with matching id"""
     for player in player_data:
@@ -60,7 +60,7 @@ def get_player_by_id(id):
 def get_player_leaderboard():
     """Return top players based on score"""
     leaderboard = sorted(
-        player_data, key=lambda player: player['score'], reverse=True)[:BOARD_SIZE]
+        player_data, key=lambda player: int(player['score']), reverse=True)[:BOARD_SIZE]
 
     # if not enough current players for board size
     high_score_count = len(leaderboard)
@@ -78,11 +78,7 @@ def post_score():
     if not player:
         return {"error": True, "message": "No player data provided to post."}, 404
 
-    last_used_id = player_data[-1].get('id')
-    if last_used_id:
-        player['id'] = last_used_id + 1  # reserved id = no update conflicts
-    else:
-        player['id'] = 0  # default, should only occur once if ever
+    player['id'] = player.get('id')
     player['name'] = player.get('name')
     player['colour'] = player.get('colour')  # tuple of 3 int (0, 0, 0) = white
     player['score'] = 0  # not including start/initial size
@@ -94,8 +90,8 @@ def post_score():
     return player_data, 201
 
 
-@app.route("/players/<int:id>/update", methods=["PATCH", "DELETE"])
-def update_player_by_id(id: int):
+@app.route("/players/<id>/update", methods=["PATCH", "DELETE"])
+def update_player_by_id(id):
     """Update or delete players and their score"""
     session_player = get_player_by_id(id)
     player, status_code = session_player[0], session_player[1]
