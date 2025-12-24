@@ -1,5 +1,69 @@
 // Custom JavaScript: This is where you add interactivity to your website
 
+// helper functions to obtain url and handle errors
+function getUrl() {
+  return `http://localhost:5000/`
+}
+
+
+function renderLeaderboard(players) {
+  const tbody = document.getElementById("leaderboard-body");
+  tbody.innerHTML = ""; // clear old data
+
+  players.forEach((player, index) => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td style="color:${player.colour}">${player.name}</td>
+      <td>${player.score}</td>
+    `;
+
+    tbody.appendChild(row);
+  });
+}
+
+
+function getLeaderboard() {
+  let url = `${getUrl()}players/leaderboard`
+
+  console.log(`Leaderboard Requested From: ${url}`)
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      //console.log(data);
+      renderLeaderboard(data);
+    })
+    .catch(err => {
+      console.error(err);
+    });
+
+}
+
+// add new player
+
+async function postPlayer(playerName, color) {
+
+  let url = `${getUrl()}players/add`
+
+  console.log(`Players POST url: ${url}`)
+  
+  const rawRes = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      "name":playerName,
+      "colour":color
+    }),
+    credentials: 'include'
+  })
+
+  const data = await rawRes.json()
+
+  console.log(data)
+}
+
 //code to return vals form buttons
 
 const startGameBtn = document.getElementById("startGameBtn");
@@ -70,8 +134,5 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Welcome! This is your starting point.");
     });
   }
-
-  // get leaderboard data
-  const playerData = getLeaderboard()
-  
 });
+
