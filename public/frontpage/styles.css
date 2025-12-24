@@ -2,9 +2,8 @@
 
 /* :root is used to define global variables (colors, fonts, etc.) that you can reuse */
 :root {
-    --primary-color: #3b77ed;
+    --primary-color: #EF8C22;
     --secondary-color: #6c757d;
-    --orange-color: #ed8d2d;
 }
 
 /* body styles apply to the entire page */
@@ -43,21 +42,6 @@ footer {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-#leaderboard {
-  border-collapse: collapse;
-  width: 300px;
-}
-
-th, td {
-  padding: 8px;
-  text-align: left;
-  border-bottom: 3px solid #000000;
-}
-
-th {
-  background-color: #ffffff;
-}
-
-#hero {
-  background-color: var(--orange-color);
+#banner {
+  background: #EF8C22;
 }
