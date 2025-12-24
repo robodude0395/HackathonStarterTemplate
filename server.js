@@ -20,7 +20,7 @@ function FoodData(id, x, y, r, color){
 }
 
 // Generate initial food
-for(var i = 0; i < 1500; i++){
+for(var i = 0; i < 1000; i++){
     var x = Math.random() * 6400 - 3200;  // -3200 to 3200
     var y = Math.random() * 6400 - 3200;
     var r = Math.random() * 15 + 5;  // 5 to 20
@@ -37,12 +37,32 @@ function getUrl() { // stem for backend host - need to run api.py and node serve
   return `http://localhost:5000/`
 }
 
+// Add this function with the other backend functions
+async function getLeaderboard() {
+  try {
+    let url = `${getUrl()}players/leaderboard`;
+    console.log(`Leaderboard GET url: ${url}`);
+
+    const rawRes = await fetch(url, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include'
+    });
+
+    const data = await rawRes.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching leaderboard:', error);
+    return [];
+  }
+}
+
 async function postPlayer(playerId, playerName, color) {
 
   let url = `${getUrl()}players/add`
 
   console.log(`Players POST url: ${url}`)
-  
+
   const rawRes = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -64,7 +84,7 @@ async function deletePlayer(playerId) {
   let url = `${getUrl()}players/${playerId}/update`
 
   console.log(`Players DELETE url: ${url}`)
-  
+
   const rawRes = await fetch(url, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
@@ -81,7 +101,7 @@ async function updatePlayer(playerId, playerScore, updateTimestamp) {
   let url = `${getUrl()}players/${playerId}/update`
 
   console.log(`Players PATCH url: ${url}`)
-  
+
   const rawRes = await fetch(url, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
@@ -109,6 +129,13 @@ var socket = require('socket.io');
 var io = socket(server);
 
 setInterval(heartbeat, 33);
+
+// Broadcast leaderboard every 3 seconds
+setInterval(async () => {
+  const leaderboard = await getLeaderboard();
+  console.log('Broadcasting leaderboard:', leaderboard);
+  io.sockets.emit('leaderboard_update', leaderboard);
+}, 3000);
 
 function heartbeat(){
     io.sockets.emit('heartbeat', { players: players, food: food });
